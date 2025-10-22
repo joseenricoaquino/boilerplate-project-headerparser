@@ -25,11 +25,15 @@ app.get('/api/hello',  (req, res) => {
 });
 
 app.get('/api/whoami', (req, res) => {
-        const ipreq = req.ip
-        const lang = req.headers['accept-language']
-        const softw = req.headers['user-agent']
+        let ipAddress = req.ip;
 
-  res.json({ ipaddress: ipreq, language: lang, software: softw })
+  // Check if the IP is an IPv4-mapped IPv6 address and extract the IPv4 part
+  if (ipAddress.startsWith("::ffff:")) {
+    ipAddress = ipAddress.split(":").pop();
+  }
+  const lang = req.headers["accept-language"];
+  const softw = req.headers["user-agent"];
+  res.json({ ipaddress: ipAddress, language: lang, software: softw })
 });
 
 
